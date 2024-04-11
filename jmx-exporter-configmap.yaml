@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jmx-exporter-config
+data:
+  jmx-exporter-config.yml: |-
+{{ .Values.jmxExporter.config | indent 4 }}
