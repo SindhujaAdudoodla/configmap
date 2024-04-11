@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "my-helm-chart.fullname" . }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "my-helm-chart.fullname" . }}
+    spec:
+      containers:
+        - name: pingfederate
+          image: your-pingfederate-image
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/pingfederate/log4j2.xml
+              subPath: log4j2.xml
+        - name: jmx-exporter
+          image: prom/jmx-exporter:latest
+          args: ["8080:/config/jmxExporter.config"]
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: pingfederate-admin-log-config
