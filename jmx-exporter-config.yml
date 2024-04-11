@@ -1,0 +1,6 @@
+rules:
+- pattern: 'java.lang<type=Memory><>(HeapMemoryUsage|NonHeapMemoryUsage):'
+  name: jvm_memory_usage_bytes
+  labels:
+    area: "$1"
+  type: GAUGE
